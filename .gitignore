@@ -32,3 +32,5 @@ link_shortener-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# IDE
+.vscode
