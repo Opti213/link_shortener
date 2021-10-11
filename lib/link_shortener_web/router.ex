@@ -1,23 +1,14 @@
 defmodule LinkShortenerWeb.Router do
   use LinkShortenerWeb, :router
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {LinkShortenerWeb.LayoutView, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", LinkShortenerWeb do
-    pipe_through :browser
+    pipe_through :api
 
-    get "/", PageController, :index
+    post("/new_url", URLRegisterConroller, :create)
   end
 
   # Other scopes may use custom stacks.
@@ -36,7 +27,7 @@ defmodule LinkShortenerWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
+      pipe_through :api
       live_dashboard "/dashboard", metrics: LinkShortenerWeb.Telemetry
     end
   end
@@ -47,7 +38,7 @@ defmodule LinkShortenerWeb.Router do
   # node running the Phoenix server.
   if Mix.env() == :dev do
     scope "/dev" do
-      pipe_through :browser
+      pipe_through :api
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end

@@ -3,8 +3,8 @@ defmodule LinkShortener.Repo.Migrations.AddUrlMapping do
 
   def change do
     create table(:url_mapping) do
-      add :full_url, :string, primory_key: true
-      add :short_url, :string
+      add(:full_url, :string)
+      add(:short_url, :string)
     end
   end
 end
